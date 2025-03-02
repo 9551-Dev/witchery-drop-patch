@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+
+  "pattern": [
+    "III",
+    "IAI",
+    "III"
+  ],
+
+  "key": {
+    "I": {
+      "item": "minecraft:gold_ingot"
+    },
+
+    "A": {
+      "item": "minecraft:emerald"
+    }
+  },
+
+  "result": {
+    "item":  "witch_gp:meow",
+    "count": 1
+  }
+}

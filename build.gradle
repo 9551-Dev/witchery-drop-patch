@@ -16,6 +16,20 @@ plugins {
     id 'org.jetbrains.changelog' version '2.2.1'
 }
 
+
+task copyResources(type: Copy) {
+    from 'libs/resources'
+    into 'run/resourcepacks'
+}
+
+tasks.named('runClient') {
+    dependsOn copyResources
+}
+
+tasks.named('runServer') {
+    dependsOn copyResources
+}
+
 apply from: 'gradle/scripts/helpers.gradle'
 
 // Early Assertions
@@ -110,6 +124,9 @@ repositories {
 }
 
 dependencies {
+    implementation rfg.deobf(files('libs/mods/WitcheryResurrected-1.12.2-0.5.2.4-forge-all.jar'))
+    implementation rfg.deobf(files('libs/mods/TombManyGraves-1.12-4.2.0.jar'))
+
     if (propertyBool('use_modern_java_syntax')) {
         annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:1.0.0'
         // Workaround for https://github.com/bsideup/jabel/issues/174
@@ -345,6 +362,15 @@ tasks.register('prioritizeCoremods') {
             if (it.isFile() && it.name =~ '(mixinbooter|configanytime)(-)([0-9])+\\.+([0-9])+(.jar)') {
                 it.renameTo(new File(it.parentFile, "!${it.name}"))
             }
+        }
+
+        copy {
+            from("libs/mods")
+            into("run/obfuscated/mods")
+        }
+        copy {
+            from("run/mods")
+            into("run/obfuscated/mods")
         }
     }
 }
